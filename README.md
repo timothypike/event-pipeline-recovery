@@ -19,7 +19,7 @@ Results are in [`docs/evidence.md`](docs/evidence.md): 38,541 events received, 0
 | Mixed timezone offsets | Normalizes every timestamp to UTC before choosing the partition | `test_offsets_normalize_to_utc_and_pick_the_utc_date` |
 | Bad lines in a good file | Keeps each bad line with a reason in the quarantine bucket; nothing is silently dropped | `test_every_malformed_line_is_kept_with_a_reason` |
 | A broken feed | The quality gate quarantines the whole file if more than 5% of lines fail; curated data is untouched | `test_broken_feed_is_quarantined_whole`, scenario 2 |
-| A batch that fails every retry | After 3 attempts SQS moves it to a dead-letter queue; a CloudWatch alarm fires; `replay` snapshot-copies it back through the normal path | `test_failed_batch_is_recovered_through_the_normal_path`, scenario 3 |
+| A batch that fails every retry | After 3 attempts SQS moves it to a dead-letter queue; a CloudWatch alarm watches the queue; `replay` snapshot-copies it back through the normal path | `test_failed_batch_is_recovered_through_the_normal_path`, scenario 3 |
 | Reruns and backfills | One Parquet file per (day, batch), so rerunning a batch overwrites exactly what it wrote before | `test_rerunning_a_batch_changes_nothing`, scenario 4 (totals identical) |
 | Proving nothing was lost | Every batch writes a manifest; `check` confirms every raw file has one and every manifest balances | `test_destination_check_flags_unprocessed_objects`, `lost_events: 0` |
 | Many small files | A Glue (PySpark) job compacts each day into large files and removes cross-batch duplicates | scenario 5: 10 files to 2, row counts match |
